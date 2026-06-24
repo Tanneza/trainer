@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Тренажёр</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="d-flex flex-column w-300px mx-auto">
+        <div id="question-html">
+          <div class="d-flex flex-column">
+            <p>Какой тон у иероглифа?</p>
+            <p class="fs-huge align-self-center lxgw-wenkai-tc-regular">晴</p>
+          </div>
+        </div>
+        <div class="d-flex flex-column">
+          <p>Ваш ответ:</p>
+          <div class="d-flex flex-row gap-1">
+            <input id="answer-input" class="flex-grow-1" size="1" />
+            <a id="send-answer-button" class="btn btn-primary" href="javascript:void(0)">Отправить</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="script.js"></script>
+</html>
