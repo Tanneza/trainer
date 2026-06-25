@@ -1,6 +1,7 @@
 from dictionary import Dictionary
 from question import Question
 from question_generator import QuestionGenerator
+from question_type import QuestionType
 
 
 class TranslationHanziQuestionGenerator(QuestionGenerator):
@@ -16,7 +17,8 @@ class TranslationHanziQuestionGenerator(QuestionGenerator):
             else:
                 mistake_details = f"Варианты перевода слова: {", ".join(word.translations)}"
             question = Question(
-                text=f"Какой перевод у слова {word.hanzi} ({word.pinyin})?: ",
+                question_type=QuestionType.TRANSLATION_HANZI,
+                #text=f"Какой перевод у слова {word.hanzi} ({word.pinyin})?: ",
                 answers=word.translations,
                 mistake_details=mistake_details
             )

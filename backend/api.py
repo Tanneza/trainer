@@ -1,11 +1,14 @@
-from fastapi import APIRouter, Path, Form
+from fastapi import APIRouter, Form
 
 import trainer_service
+from question_type import QuestionType
 
 router = APIRouter()
 
-def generate_questions_list_by_type(question_type: str):
-    pass
+@router.post("/lessons")
+def start_lesson(question_type: str = Form(...)) -> list[int]:
+    question_type_enum = QuestionType[question_type.upper()]
+    return trainer_service.generate_questions_list_by_type(question_type_enum)
 
 
 @router.get("/questions/{question_id}")

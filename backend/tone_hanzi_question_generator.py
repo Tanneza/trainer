@@ -1,6 +1,8 @@
 from dictionary import Dictionary
 from question import Question
 from question_generator import QuestionGenerator
+from question_service import question_service
+from question_type import QuestionType
 
 
 class ToneHanziQuestionGenerator(QuestionGenerator):
@@ -11,8 +13,11 @@ class ToneHanziQuestionGenerator(QuestionGenerator):
         questions_list = []
 
         for word in self._dictionary.get_words_list():
+            question_type=QuestionType.TONE_HANZI
+            html_template = question_service.get_question_template_by_type(question_type)
             question = Question(
-                text=f"Какие номера тонов у слова {word.hanzi} ({word.pinyin} - {", ".join(word.translations)})?: ",
+                question_type=question_type,
+                html=html_template.format(hanzi=word.hanzi, pinyin=word.pinyin, translations=", ".join(word.translations)),
                 answers=[str(word.tone)],
                 mistake_details=f"Это тон {word.tone}"
             )
