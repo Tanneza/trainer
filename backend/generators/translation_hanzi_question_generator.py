@@ -1,7 +1,7 @@
 from dictionary import Dictionary
 from question import Question
-from backend.services.question_service import question_service
-from question_generator import QuestionGenerator
+from services.question_service import question_service
+from generators.question_generator import QuestionGenerator
 from question_type import QuestionType
 
 
@@ -21,7 +21,7 @@ class TranslationHanziQuestionGenerator(QuestionGenerator):
                 mistake_details = f"Варианты перевода слова: {", ".join(word.translations)}"
             question = Question(
                 question_type=question_type,
-                hlmt=html_template.format(hanzi=word.hanzi, pinyin=word.pinyin),
+                html=html_template.format(hanzi=word.hanzi, pinyin=word.pinyin),
                 #text=f"Какой перевод у слова {word.hanzi} ({word.pinyin})?: ",
                 answers=word.translations,
                 mistake_details=mistake_details

@@ -1,9 +1,7 @@
 from dictionary import Dictionary
 from question import Question
-
-from backend.question_type import QuestionType
-from backend.services.question_service import question_service
-from question_generator import QuestionGenerator
+from services.question_service import question_service
+from generators.question_generator import QuestionGenerator
 from question_type import QuestionType
 
 
