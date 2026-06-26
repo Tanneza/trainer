@@ -1,1 +1,1 @@
-docker run --name trainer-server -v ./nginx.conf:/etc/nginx/conf.d/default.conf:ro -v ./frontend/:/var/www/html:ro -d -p 80:80 nginx
+docker run --name trainer-server -v ./nginx.conf:/etc/nginx/conf.d/default.conf:ro -v ./frontend/:/var/www/html:ro -d -p 80:80 --add-host=host.docker.internal:host-gateway nginx
