@@ -1,13 +1,6 @@
 from fastapi import FastAPI
 
 import api
-from dictionary import Dictionary
-from question import Question
-from question_service import question_service
-from question_type import QuestionType
-from tone_hanzi_question_generator import ToneHanziQuestionGenerator
-from trainer import Trainer
-
 
 # train = Trainer(dictionary)
 # train.run_trainer()

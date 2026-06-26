@@ -1,14 +1,13 @@
 import random
 
-from dictionary import Dictionary
 from dictionary_service import create_dictionary
-from question_generator import QuestionGenerator
+from backend.generators.question_generator import QuestionGenerator
 from question_service import question_service
 from question_type import QuestionType
-from tone_hanzi_question_generator import ToneHanziQuestionGenerator
-from tone_pinyin_question_generator import TonePinyinQuestionGenerator
-from translation_hanzi_question_generator import TranslationHanziQuestionGenerator
-from translation_pinyin_question_generator import TranslationPinyinQuestionGenerator
+from backend.generators.tone_hanzi_question_generator import ToneHanziQuestionGenerator
+from backend.generators.tone_pinyin_question_generator import TonePinyinQuestionGenerator
+from backend.generators.translation_hanzi_question_generator import TranslationHanziQuestionGenerator
+from backend.generators.translation_pinyin_question_generator import TranslationPinyinQuestionGenerator
 
 
 dictionary = create_dictionary()

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Form
 
-import trainer_service
+from backend.services import trainer_service
 from question_type import QuestionType
 
 router = APIRouter()
