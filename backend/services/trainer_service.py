@@ -3,7 +3,7 @@ import random
 from services.dictionary_service import create_dictionary
 from generators.question_generator import QuestionGenerator
 from services.question_service import question_service
-from question_type import QuestionType
+from models.question_type import QuestionType
 from generators.tone_hanzi_question_generator import ToneHanziQuestionGenerator
 from generators.tone_pinyin_question_generator import TonePinyinQuestionGenerator
 from generators.translation_hanzi_question_generator import TranslationHanziQuestionGenerator

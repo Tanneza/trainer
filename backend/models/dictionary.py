@@ -1,4 +1,4 @@
-from word import Word
+from models.word import Word
 
 
 class Dictionary:

@@ -1,5 +1,5 @@
-from question import Question
-from question_type import QuestionType
+from models.question import Question
+from models.question_type import QuestionType
 
 
 class QuestionService:

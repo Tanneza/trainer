@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Form
 
 from services import trainer_service
-from question_type import QuestionType
+from models.question_type import QuestionType
 
 router = APIRouter()
 

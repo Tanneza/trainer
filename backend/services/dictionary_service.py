@@ -1,4 +1,4 @@
-from dictionary import Dictionary
+from models.dictionary import Dictionary
 
 dictionaries = [
     # "словарь2.csv",

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from question import Question
+from models.question import Question
 
 
 class QuestionGenerator(ABC):

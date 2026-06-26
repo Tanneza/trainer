@@ -1,8 +1,8 @@
-from dictionary import Dictionary
-from question import Question
+from models.dictionary import Dictionary
+from models.question import Question
 from services.question_service import question_service
 from generators.question_generator import QuestionGenerator
-from question_type import QuestionType
+from models.question_type import QuestionType
 
 
 class TranslationPinyinQuestionGenerator(QuestionGenerator):

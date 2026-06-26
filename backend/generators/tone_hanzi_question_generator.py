@@ -1,8 +1,8 @@
-from dictionary import Dictionary
-from question import Question
+from models.dictionary import Dictionary
+from models.question import Question
 from generators.question_generator import QuestionGenerator
 from services.question_service import question_service
-from question_type import QuestionType
+from models.question_type import QuestionType
 
 
 class ToneHanziQuestionGenerator(QuestionGenerator):

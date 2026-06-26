@@ -1,7 +1,7 @@
 import random
 
-from dictionary import Dictionary
-from question import Question
+from models.dictionary import Dictionary
+from models.question import Question
 from generators.tone_hanzi_question_generator import ToneHanziQuestionGenerator
 from generators.tone_pinyin_question_generator import TonePinyinQuestionGenerator
 from generators.translation_hanzi_question_generator import TranslationHanziQuestionGenerator

@@ -1,4 +1,4 @@
-from question_type import QuestionType
+from models.question_type import QuestionType
 
 
 class Question:
