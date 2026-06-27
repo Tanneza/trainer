@@ -1,5 +1,6 @@
 import { startLesson as APIStartLesson } from "./api.js";
 import { Question } from "./question.js";
+import { QuestionNumber } from "./questionNumber.js";
 
 var questionsList = [];
 var currentQuestionIndex = 0;
@@ -16,13 +17,13 @@ async function startLesson(questionType) {
 
   currentQuestionIndex = 0;
 
-  const questionNumber = currentQuestionIndex + 1;
-  const questionsCount = questionsList.length;
+  console.log(`Индекс вопроса: ${currentQuestionIndex}`);
 
-  console.log(`Номер вопроса: ${questionNumber}`);
-  console.log(`Количество вопросов ${questionsCount}`);
-
-  document.getElementById("question-number").textContent = `Вопрос ${questionNumber} из ${questionsCount}`;
+  const questionNumber = new QuestionNumber({
+    number: currentQuestionIndex + 1,
+    count: questionsList.length,
+  });
+  questionNumber.onMount();
 
   const questionId = questionsList[currentQuestionIndex];
 

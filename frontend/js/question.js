@@ -9,11 +9,29 @@ export class Question {
     this.onSendAnswer = this.onSendAnswer.bind(this);
   }
 
+  async updateProps(props) {
+    if (props.id !== undefined) {
+      this.id = props.id;
+      await this.loadHTML();
+    }
+
+    if (props.onCorrectAnswer !== undefined) {
+      this.onCorrectAnswer = props.onCorrectAnswer;
+    }
+
+    if (props.onIncorrectAnswer !== undefined) {
+      this.onIncorrectAnswer = props.onIncorrectAnswer;
+    }
+
+    this.render();
+  }
+
   async onMount() {
     document.getElementById("send-answer-button").addEventListener("click", this.onSendAnswer);
 
     document.getElementById("answer-input").value = "";
     await this.loadHTML();
+
     this.render();
   }
 
