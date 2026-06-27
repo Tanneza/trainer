@@ -1,34 +1,35 @@
-async function main() {
-  document.getElementById("send-answer-button").addEventListener("click", async (e) => {
-    e.preventDefault();
+import { startLesson as APIStartLesson } from "./api.js";
+import { Question } from "./question.js";
 
-    console.log("Нажата кнопка отправки ответа");
+var questionsList = [];
+var currentQuestionIndex = 0;
 
-    const userAnswer = document.getElementById("answer-input").value;
-
-    console.log(`Ответ пользователя: "${userAnswer}"`);
-
-    if (!userAnswer) {
-      console.warn("Поле для ввода ответа пустое");
-      return;
-    }
-
-    const check_result = await checkAnswer(questionId, userAnswer);
-
-    console.log(`Результат проверки ответа: ${check_result}`);
-  });
-
+async function init() {
   const questionType = "tone_hanzi";
-  const questionsList = await startLesson(questionType);
-
-  console.log(`Список вопросов: [${questionsList}]`);
-
-  const questionId = questionsList[0];
-  const question_html = await getQuestionById(questionId);
-
-  console.log(`Вопрос: ${question_html}`);
-
-  document.getElementById("question-html").innerHTML = question_html;
+  await startLesson(questionType);
 }
 
-main();
+async function startLesson(questionType) {
+  questionsList = await APIStartLesson(questionType);
+
+  console.log(`Список ID вопросов: [${questionsList}]`);
+
+  currentQuestionIndex = 0;
+
+  const questionNumber = currentQuestionIndex + 1;
+  const questionsCount = questionsList.length;
+
+  console.log(`Номер вопроса: ${questionNumber}`);
+  console.log(`Количество вопросов ${questionsCount}`);
+
+  document.getElementById("question-number").textContent = `Вопрос ${questionNumber} из ${questionsCount}`;
+
+  const questionId = questionsList[currentQuestionIndex];
+
+  console.log(`ID вопроса: ${questionId}`);
+
+  const question = new Question({ id: questionId });
+  question.onMount();
+}
+
+init();

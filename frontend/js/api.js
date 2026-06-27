@@ -1,4 +1,4 @@
-async function startLesson(questionType) {
+export async function startLesson(questionType) {
   try {
     const formData = new FormData();
     formData.append("question_type", questionType);
@@ -14,7 +14,7 @@ async function startLesson(questionType) {
   }
 }
 
-async function getQuestionById(questionId) {
+export async function getQuestionById(questionId) {
   try {
     const response = await fetch(`/api/questions/${questionId}`, {
       method: "GET",
@@ -26,7 +26,7 @@ async function getQuestionById(questionId) {
   }
 }
 
-async function checkAnswer(questionId, userAnswer) {
+export async function checkAnswer(questionId, userAnswer) {
   try {
     const formData = new FormData();
     formData.append("user_answer", userAnswer);
