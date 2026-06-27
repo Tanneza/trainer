@@ -29,7 +29,8 @@ export class Question {
   async onMount() {
     document.getElementById("send-answer-button").addEventListener("click", this.onSendAnswer);
 
-    document.getElementById("answer-input").value = "";
+    this.clearAnswerInput();
+    this.focusAnswerInput();
     await this.loadHTML();
 
     this.render();
@@ -41,6 +42,22 @@ export class Question {
 
   render() {
     document.getElementById("question-html").innerHTML = this.html;
+  }
+
+  clearAnswerInput() {
+    document.getElementById("answer-input").value = "";
+  }
+
+  focusAnswerInput() {
+    document.getElementById("answer-input").focus();
+  }
+
+  disableAnswerInput() {
+    document.getElementById("answer-input").disabled = true;
+  }
+
+  disableSendAnswerButton() {
+    document.getElementById("send-answer-button").disabled = true;
   }
 
   async loadHTML() {

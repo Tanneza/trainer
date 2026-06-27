@@ -20,6 +20,8 @@ export class QuestionNumber {
     this.render();
   }
 
+  onUnmount() {}
+
   render() {
     document.getElementById("question-number").textContent = `Вопрос ${this.number} из ${this.count}`;
   }
