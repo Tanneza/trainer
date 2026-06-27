@@ -97,7 +97,9 @@ export class Trainer {
     console.log(`ID вопроса: ${questionId}`);
 
     this.question.updateProps({ id: questionId });
+
     this.question.clearAnswerInput();
+    this.question.enableAnswerInput();
     this.question.focusAnswerInput();
 
     ++this.nextQuestionIndex;

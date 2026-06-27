@@ -93,22 +93,21 @@ export class Question {
 
     console.log(`Ответ пользователя: "${userAnswer}"`);
 
-    if (!userAnswer) {
-      console.warn("Поле для ввода ответа пустое");
-      return;
-    }
+    if (userAnswer) {
+      const checkResult = await APICheckAnswer(this.id, userAnswer);
 
-    const checkResult = await APICheckAnswer(this.id, userAnswer);
+      console.log(`Результат проверки ответа: ${checkResult}`);
 
-    console.log(`Результат проверки ответа: ${checkResult}`);
+      if (checkResult === true) {
+        typeof this.onCorrectAnswer === "function" && this.onCorrectAnswer(this.id);
+      } else {
+        typeof this.onIncorrectAnswer === "function" && this.onIncorrectAnswer(this.id);
+      }
 
-    if (checkResult === true) {
-      typeof this.onCorrectAnswer === "function" && this.onCorrectAnswer(this.id);
+      typeof this.onAnyAnswer === "function" && this.onAnyAnswer(this.id);
     } else {
-      typeof this.onIncorrectAnswer === "function" && this.onIncorrectAnswer(this.id);
+      console.warn("Поле для ввода ответа пустое");
     }
-
-    typeof this.onAnyAnswer === "function" && this.onAnyAnswer(this.id);
 
     this.enableAnswerInput();
   }
