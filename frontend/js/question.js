@@ -87,9 +87,9 @@ export class Question {
     console.log(`Результат проверки ответа: ${checkResult}`);
 
     if (checkResult === true) {
-      typeof this.onCorrectAnswer === "function" && this.onCorrectAnswer();
+      typeof this.onCorrectAnswer === "function" && this.onCorrectAnswer(this.id);
     } else {
-      typeof this.onIncorrectAnswer === "function" && this.onIncorrectAnswer();
+      typeof this.onIncorrectAnswer === "function" && this.onIncorrectAnswer(this.id);
     }
   }
 }

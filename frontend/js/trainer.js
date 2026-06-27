@@ -7,6 +7,7 @@ export class Trainer {
     this.questionType = props.questionType;
 
     this.questionsList = [];
+    this.mistakesList = null;
     this.nextQuestionIndex = 0;
     this.questionNumber = null;
     this.question = null;
@@ -17,8 +18,25 @@ export class Trainer {
 
     this.questionsList = await APIStartLesson(this.questionType);
 
+    this.startRound();
+  }
+
+  finishLesson() {
+    console.log("Пользователь завершил урок");
+
+    this.question.disableAnswerInput();
+    this.question.disableSendAnswerButton();
+
+    this.questionNumber.onUnmount();
+    this.question.onUnmount();
+  }
+
+  startRound() {
+    console.log("Пользователь начал раунд");
+
     console.log(`Список ID вопросов: [${this.questionsList}]`);
 
+    this.mistakesList = [];
     this.nextQuestionIndex = 0;
 
     console.log(`Индекс вопроса: ${this.nextQuestionIndex}`);
@@ -42,16 +60,18 @@ export class Trainer {
           if (this.hasNextQuestion()) {
             this.askNextQuestion();
           } else {
-            this.finishLesson();
+            this.finishRound();
           }
         },
-        onIncorrectAnswer: () => {
+        onIncorrectAnswer: (mistake_id) => {
           alert("Неправильно!");
+
+          this.mistakesList.push(mistake_id);
 
           if (this.hasNextQuestion()) {
             this.askNextQuestion();
           } else {
-            this.finishLesson();
+            this.finishRound();
           }
         },
       });
@@ -61,14 +81,18 @@ export class Trainer {
     }
   }
 
-  finishLesson() {
-    console.log("Пользователь завершил урок");
+  finishRound() {
+    console.log("Пользователь завершил раунд");
 
-    this.question.disableAnswerInput();
-    this.question.disableSendAnswerButton();
+    if (this.mistakesList.length > 0) {
+      console.log("Поработаем над ошибками");
 
-    this.questionNumber.onUnmount();
-    this.question.onUnmount();
+      this.questionsList = this.mistakesList;
+
+      this.startRound();
+    } else {
+      this.finishLesson();
+    }
   }
 
   hasNextQuestion() {
