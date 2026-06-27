@@ -1,10 +1,10 @@
 export class QuestionNumber {
-  constructor(props) {
+  constructor(props = {}) {
     this.number = props.number;
     this.count = props.count;
   }
 
-  updateProps(props) {
+  updateProps(props = {}) {
     if (props.number !== undefined) {
       this.number = props.number;
     }
@@ -23,6 +23,8 @@ export class QuestionNumber {
   onUnmount() {}
 
   render() {
-    document.getElementById("question-number").textContent = `Вопрос ${this.number} из ${this.count}`;
+    const number = this.number ?? "?";
+    const count = this.count ?? "?";
+    document.getElementById("question-number").textContent = `Вопрос ${number} из ${count}`;
   }
 }

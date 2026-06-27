@@ -1,15 +1,17 @@
 import { getQuestionById as APIGetQuestionById, checkAnswer as APICheckAnswer } from "./api.js";
 
 export class Question {
-  constructor(props) {
+  constructor(props = {}) {
     this.id = props.id;
     this.onCorrectAnswer = props.onCorrectAnswer;
     this.onIncorrectAnswer = props.onIncorrectAnswer;
+    this.onAnyAnswer = props.onAnyAnswer;
 
+    this.html = "";
     this.onSendAnswer = this.onSendAnswer.bind(this);
   }
 
-  async updateProps(props) {
+  async updateProps(props = {}) {
     if (props.id !== undefined) {
       this.id = props.id;
       await this.loadHTML();
@@ -23,6 +25,10 @@ export class Question {
       this.onIncorrectAnswer = props.onIncorrectAnswer;
     }
 
+    if (props.onAnyAnswer !== undefined) {
+      this.onAnyAnswer = props.onAnyAnswer;
+    }
+
     this.render();
   }
 
@@ -30,8 +36,12 @@ export class Question {
     document.getElementById("send-answer-button").addEventListener("click", this.onSendAnswer);
 
     this.clearAnswerInput();
+    this.enableAnswerInput();
     this.focusAnswerInput();
-    await this.loadHTML();
+
+    if (this.id !== undefined) {
+      await this.loadHTML();
+    }
 
     this.render();
   }
@@ -52,6 +62,10 @@ export class Question {
     document.getElementById("answer-input").focus();
   }
 
+  enableAnswerInput() {
+    document.getElementById("answer-input").disabled = false;
+  }
+
   disableAnswerInput() {
     document.getElementById("answer-input").disabled = true;
   }
@@ -69,6 +83,8 @@ export class Question {
   }
 
   async onSendAnswer(e) {
+    this.disableAnswerInput();
+
     e.preventDefault();
 
     console.log("Нажата кнопка отправки ответа");
@@ -91,5 +107,9 @@ export class Question {
     } else {
       typeof this.onIncorrectAnswer === "function" && this.onIncorrectAnswer(this.id);
     }
+
+    typeof this.onAnyAnswer === "function" && this.onAnyAnswer(this.id);
+
+    this.enableAnswerInput();
   }
 }

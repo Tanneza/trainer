@@ -18,14 +18,36 @@ export class Trainer {
 
     this.questionsList = await APIStartLesson(this.questionType);
 
+    this.questionNumber = new QuestionNumber();
+    this.question = new Question({
+      onCorrectAnswer: () => {
+        alert("Правильно!");
+      },
+      onIncorrectAnswer: (mistake_id) => {
+        alert("Неправильно!");
+
+        this.mistakesList.push(mistake_id);
+      },
+      onAnyAnswer: () => {
+        if (this.hasNextQuestion()) {
+          this.askNextQuestion();
+        } else {
+          this.finishRound();
+        }
+      },
+    });
+
+    this.questionNumber.onMount();
+    this.question.onMount();
+
     this.startRound();
   }
 
   finishLesson() {
     console.log("Пользователь завершил урок");
 
-    this.question.disableAnswerInput();
     this.question.disableSendAnswerButton();
+    this.question.disableAnswerInput();
 
     this.questionNumber.onUnmount();
     this.question.onUnmount();
@@ -39,45 +61,8 @@ export class Trainer {
     this.mistakesList = [];
     this.nextQuestionIndex = 0;
 
-    console.log(`Индекс вопроса: ${this.nextQuestionIndex}`);
-
     if (this.hasNextQuestion()) {
-      this.questionNumber = new QuestionNumber({
-        number: this.nextQuestionIndex + 1,
-        count: this.questionsList.length,
-      });
-      this.questionNumber.onMount();
-
-      const questionId = this.questionsList[this.nextQuestionIndex];
-
-      console.log(`ID вопроса: ${questionId}`);
-
-      this.question = new Question({
-        id: questionId,
-        onCorrectAnswer: () => {
-          alert("Правильно!");
-
-          if (this.hasNextQuestion()) {
-            this.askNextQuestion();
-          } else {
-            this.finishRound();
-          }
-        },
-        onIncorrectAnswer: (mistake_id) => {
-          alert("Неправильно!");
-
-          this.mistakesList.push(mistake_id);
-
-          if (this.hasNextQuestion()) {
-            this.askNextQuestion();
-          } else {
-            this.finishRound();
-          }
-        },
-      });
-      this.question.onMount();
-
-      ++this.nextQuestionIndex;
+      this.askNextQuestion();
     }
   }
 
@@ -102,7 +87,10 @@ export class Trainer {
   askNextQuestion() {
     console.log(`Индекс вопроса: ${this.nextQuestionIndex}`);
 
-    this.questionNumber.updateProps({ number: this.nextQuestionIndex + 1 });
+    this.questionNumber.updateProps({
+      number: this.nextQuestionIndex + 1,
+      count: this.questionsList.length,
+    });
 
     const questionId = this.questionsList[this.nextQuestionIndex];
 
