@@ -6,7 +6,12 @@ async function main() {
 
     const userAnswer = document.getElementById("answer-input").value;
 
-    console.log(`Ответ пользователя: ${userAnswer}`);
+    console.log(`Ответ пользователя: "${userAnswer}"`);
+
+    if (!userAnswer) {
+      console.warn("Поле для ввода ответа пустое");
+      return;
+    }
 
     const check_result = await checkAnswer(questionId, userAnswer);
 
@@ -16,7 +21,7 @@ async function main() {
   const questionType = "tone_hanzi";
   const questionsList = await startLesson(questionType);
 
-  console.log(`Список вопросов: ${questionsList}`);
+  console.log(`Список вопросов: [${questionsList}]`);
 
   const questionId = questionsList[0];
   const question_html = await getQuestionById(questionId);
