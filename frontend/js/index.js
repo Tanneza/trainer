@@ -37,7 +37,7 @@ async function startLesson(questionType) {
     question = new Question({
       id: questionId,
       onCorrectAnswer: () => {
-        console.log("Правильно!");
+        alert("Правильно!");
 
         if (hasNextQuestion()) {
           askNextQuestion();
@@ -46,7 +46,7 @@ async function startLesson(questionType) {
         }
       },
       onIncorrectAnswer: () => {
-        console.log("Неправильно!");
+        alert("Неправильно!");
 
         if (hasNextQuestion()) {
           askNextQuestion();
@@ -76,6 +76,8 @@ function hasNextQuestion() {
 }
 
 function askNextQuestion() {
+  console.log(`Индекс вопроса: ${nextQuestionIndex}`);
+
   questionNumber.updateProps({ number: nextQuestionIndex + 1 });
 
   const questionId = questionsList[nextQuestionIndex];

@@ -63,7 +63,7 @@ export class Question {
   async loadHTML() {
     const questionHTML = await APIGetQuestionById(this.id);
 
-    console.log(`HTML вопроса: ${questionHTML}`);
+    console.log(`HTML вопроса:\n${questionHTML}`);
 
     this.html = questionHTML;
   }
