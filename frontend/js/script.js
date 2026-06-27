@@ -6,22 +6,22 @@ async function main() {
 
     const userAnswer = document.getElementById("answer-input").value;
 
-    console.log(`User answer = ${userAnswer}`);
+    console.log(`Ответ пользователя: ${userAnswer}`);
 
     const check_result = await checkAnswer(questionId, userAnswer);
 
-    console.log(`Check result = ${check_result}`);
+    console.log(`Результат проверки ответа: ${check_result}`);
   });
 
   const questionType = "tone_hanzi";
   const questionsList = await startLesson(questionType);
 
-  console.log(`Questions list = ${questionsList}`);
+  console.log(`Список вопросов: ${questionsList}`);
 
   const questionId = questionsList[0];
   const question_html = await getQuestionById(questionId);
 
-  console.log(`Question = ${question_html}`);
+  console.log(`Вопрос: ${question_html}`);
 
   document.getElementById("question-html").innerHTML = question_html;
 }
