@@ -1,15 +1,18 @@
 import { startLesson as APIStartLesson } from "./api.js";
 import { Question } from "./question.js";
 import { QuestionNumber } from "./questionNumber.js";
+import { RoundNumber } from "./roundNumber.js";
 
 export class Trainer {
   constructor(props) {
     this.questionType = props.questionType;
 
-    this.questionsList = [];
+    this.questionsList = null;
     this.mistakesList = null;
+    this.currentRoundNumber = null;
     this.currentQuestionNumber = null;
     this.questionsCount = null;
+    this.roundNumberComponent = null;
     this.questionNumberComponent = null;
     this.questionComponent = null;
   }
@@ -19,25 +22,32 @@ export class Trainer {
 
     this.questionsList = await APIStartLesson(this.questionType);
 
-    this.questionNumberComponent = new QuestionNumber();
-    this.questionComponent = new Question({
-      onCorrectAnswer: () => {
-        alert("Правильно!");
-      },
-      onIncorrectAnswer: (mistake_id) => {
-        alert("Неправильно!");
+    if (this.hasQuestions()) {
+      this.roundNumberComponent = new RoundNumber();
+      this.questionNumberComponent = new QuestionNumber();
+      this.questionComponent = new Question({
+        onCorrectAnswer: () => {
+          alert("Правильно!");
+        },
+        onIncorrectAnswer: (mistake_id) => {
+          alert("Неправильно!");
 
-        this.mistakesList.push(mistake_id);
-      },
-      onAnyAnswer: () => {
-        this.finishQuestion();
-      },
-    });
+          this.mistakesList.push(mistake_id);
+        },
+        onAnyAnswer: () => {
+          this.finishQuestion();
+        },
+      });
 
-    this.questionNumberComponent.onMount();
-    this.questionComponent.onMount();
+      this.questionNumberComponent.onMount();
+      this.questionComponent.onMount();
 
-    this.startRound();
+      this.currentRoundNumber = 1;
+
+      this.startRound();
+    } else {
+      this.finishLesson();
+    }
   }
 
   finishLesson() {
@@ -51,24 +61,17 @@ export class Trainer {
   }
 
   startRound() {
-    console.log("Пользователь начал раунд");
+    console.log(`Пользователь начал раунд ${this.currentRoundNumber}`);
+
+    this.roundNumberComponent.updateProps({ number: this.currentRoundNumber });
 
     console.log(`Список ID вопросов: [${this.questionsList}]`);
 
     this.mistakesList = [];
+    this.currentQuestionNumber = 1;
+    this.questionsCount = this.questionsList.length;
 
-    if (this.hasQuestions()) {
-      console.log("Список вопросов не пуст");
-
-      this.currentQuestionNumber = 1;
-      this.questionsCount = this.questionsList.length;
-
-      this.startQuestion();
-    } else {
-      console.log("Список вопросов пуст");
-
-      this.finishRound();
-    }
+    this.startQuestion();
   }
 
   finishRound() {
@@ -79,6 +82,8 @@ export class Trainer {
 
       this.questionsList = this.mistakesList;
 
+      ++this.currentRoundNumber;
+
       this.startRound();
     } else {
       console.log("Список ошибок пуст");
@@ -88,9 +93,7 @@ export class Trainer {
   }
 
   startQuestion() {
-    console.log("Пользователь начал вопрос");
-
-    console.log(`Номер вопроса: ${this.currentQuestionNumber}`);
+    console.log(`Пользователь начал вопрос ${this.currentQuestionNumber}`);
 
     this.questionNumberComponent.updateProps({
       number: this.currentQuestionNumber,
