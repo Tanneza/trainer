@@ -8,9 +8,10 @@ export class Trainer {
 
     this.questionsList = [];
     this.mistakesList = null;
-    this.nextQuestionIndex = 0;
-    this.questionNumber = null;
-    this.question = null;
+    this.currentQuestionNumber = null;
+    this.questionsCount = null;
+    this.questionNumberComponent = null;
+    this.questionComponent = null;
   }
 
   async startLesson() {
@@ -18,8 +19,8 @@ export class Trainer {
 
     this.questionsList = await APIStartLesson(this.questionType);
 
-    this.questionNumber = new QuestionNumber();
-    this.question = new Question({
+    this.questionNumberComponent = new QuestionNumber();
+    this.questionComponent = new Question({
       onCorrectAnswer: () => {
         alert("Правильно!");
       },
@@ -29,16 +30,12 @@ export class Trainer {
         this.mistakesList.push(mistake_id);
       },
       onAnyAnswer: () => {
-        if (this.hasNextQuestion()) {
-          this.askNextQuestion();
-        } else {
-          this.finishRound();
-        }
+        this.finishQuestion();
       },
     });
 
-    this.questionNumber.onMount();
-    this.question.onMount();
+    this.questionNumberComponent.onMount();
+    this.questionComponent.onMount();
 
     this.startRound();
   }
@@ -46,11 +43,11 @@ export class Trainer {
   finishLesson() {
     console.log("Пользователь завершил урок");
 
-    this.question.disableSendAnswerButton();
-    this.question.disableAnswerInput();
+    this.questionComponent.disableSendAnswerButton();
+    this.questionComponent.disableAnswerInput();
 
-    this.questionNumber.onUnmount();
-    this.question.onUnmount();
+    this.questionNumberComponent.onUnmount();
+    this.questionComponent.onUnmount();
   }
 
   startRound() {
@@ -59,49 +56,79 @@ export class Trainer {
     console.log(`Список ID вопросов: [${this.questionsList}]`);
 
     this.mistakesList = [];
-    this.nextQuestionIndex = 0;
 
-    if (this.hasNextQuestion()) {
-      this.askNextQuestion();
+    if (this.hasQuestions()) {
+      console.log("Список вопросов не пуст");
+
+      this.currentQuestionNumber = 1;
+      this.questionsCount = this.questionsList.length;
+
+      this.startQuestion();
+    } else {
+      console.log("Список вопросов пуст");
+
+      this.finishRound();
     }
   }
 
   finishRound() {
     console.log("Пользователь завершил раунд");
 
-    if (this.mistakesList.length > 0) {
-      console.log("Поработаем над ошибками");
+    if (this.hasMistakes()) {
+      console.log("Список ошибок не пуст");
 
       this.questionsList = this.mistakesList;
 
       this.startRound();
     } else {
+      console.log("Список ошибок пуст");
+
       this.finishLesson();
     }
   }
 
-  hasNextQuestion() {
-    return this.nextQuestionIndex < this.questionsList.length;
-  }
+  startQuestion() {
+    console.log("Пользователь начал вопрос");
 
-  askNextQuestion() {
-    console.log(`Индекс вопроса: ${this.nextQuestionIndex}`);
+    console.log(`Номер вопроса: ${this.currentQuestionNumber}`);
 
-    this.questionNumber.updateProps({
-      number: this.nextQuestionIndex + 1,
-      count: this.questionsList.length,
+    this.questionNumberComponent.updateProps({
+      number: this.currentQuestionNumber,
+      count: this.questionsCount,
     });
 
-    const questionId = this.questionsList[this.nextQuestionIndex];
+    const questionId = this.questionsList.shift();
 
     console.log(`ID вопроса: ${questionId}`);
 
-    this.question.updateProps({ id: questionId });
+    this.questionComponent.updateProps({ id: questionId });
 
-    this.question.clearAnswerInput();
-    this.question.enableAnswerInput();
-    this.question.focusAnswerInput();
+    this.questionComponent.clearAnswerInput();
+    this.questionComponent.enableAnswerInput();
+    this.questionComponent.focusAnswerInput();
+  }
 
-    ++this.nextQuestionIndex;
+  finishQuestion() {
+    console.log("Пользователь завершил вопрос");
+
+    if (this.hasQuestions()) {
+      console.log("Список вопросов не пуст");
+
+      ++this.currentQuestionNumber;
+
+      this.startQuestion();
+    } else {
+      console.log("Список вопросов пуст");
+
+      this.finishRound();
+    }
+  }
+
+  hasQuestions() {
+    return this.questionsList.length > 0;
+  }
+
+  hasMistakes() {
+    return this.mistakesList.length > 0;
   }
 }
