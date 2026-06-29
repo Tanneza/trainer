@@ -2,6 +2,10 @@
   font-size: 10rem;
 }
 
+.fs-big {
+  font-size: 7rem;
+}
+
 .w-500px {
   width: 500px;
 }
