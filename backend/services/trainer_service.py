@@ -26,9 +26,15 @@ def get_question_by_id(question_id: int) -> str:
     return question.html
 
 
-def check_user_answer(question_id: int, user_answer: str):
+def check_user_answer(question_id: int, user_answer: str) -> dict:
     question = question_service.get_question_by_id(question_id)
-    return question.check(user_answer)
+    check_result = question.check(user_answer)
+    result = {
+        "result": check_result
+    }
+    if not check_result:
+        result["mistake_details"] = question.mistake_details
+    return result
 
 
 def get_question_generator(question_type: QuestionType) -> QuestionGenerator | None:
