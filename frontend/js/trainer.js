@@ -1,4 +1,5 @@
-import { startLesson as APIStartLesson } from "./api.js";
+import { Answer } from "./answer.js";
+import { startLesson as APIStartLesson, getQuestionById as APIGetQuestionById, checkAnswer as APICheckAnswer } from "./api.js";
 import { Question } from "./question.js";
 import { QuestionNumber } from "./questionNumber.js";
 import { RoundNumber } from "./roundNumber.js";
@@ -11,10 +12,12 @@ export class Trainer {
     this.mistakesList = null;
     this.currentRoundNumber = null;
     this.currentQuestionNumber = null;
+    this.currentQuestionId = null;
     this.questionsCount = null;
     this.roundNumberComponent = null;
     this.questionNumberComponent = null;
     this.questionComponent = null;
+    this.answerComponent = null;
   }
 
   async startLesson() {
@@ -25,42 +28,57 @@ export class Trainer {
     if (this.hasQuestions()) {
       this.roundNumberComponent = new RoundNumber();
       this.questionNumberComponent = new QuestionNumber();
-      this.questionComponent = new Question({
-        onCorrectAnswer: () => {
-          alert("Правильно!");
-        },
-        onIncorrectAnswer: (mistake_id) => {
-          alert("Неправильно!");
+      this.questionComponent = new Question();
+      this.answerComponent = new Answer({
+        onAnswer: async (userAnswer) => {
+          console.log(`Ответ пользователя: "${userAnswer}"`);
 
-          this.mistakesList.push(mistake_id);
-        },
-        onAnyAnswer: () => {
-          this.finishQuestion();
+          if (userAnswer) {
+            this.answerComponent.disableAnswerInput();
+            this.answerComponent.disableSendAnswerButton();
+
+            const checkResult = await APICheckAnswer(this.currentQuestionId, userAnswer);
+
+            console.log(`Результат проверки ответа: ${checkResult}`);
+
+            if (checkResult === true) {
+              alert("Правильно!");
+            } else {
+              alert("Неправильно!");
+
+              this.mistakesList.push(this.currentQuestionId);
+            }
+
+            await this.finishQuestion();
+          } else {
+            console.warn("Поле для ввода ответа пустое");
+          }
         },
       });
 
+      this.roundNumberComponent.onMount();
       this.questionNumberComponent.onMount();
       this.questionComponent.onMount();
+      this.answerComponent.onMount();
 
       this.currentRoundNumber = 1;
 
-      this.startRound();
+      await this.startRound();
     } else {
-      this.finishLesson();
+      await this.finishLesson();
     }
   }
 
-  finishLesson() {
+  async finishLesson() {
     console.log("Пользователь завершил урок");
 
-    this.questionComponent.disableSendAnswerButton();
-    this.questionComponent.disableAnswerInput();
-
+    this.roundNumberComponent.onUnmount();
     this.questionNumberComponent.onUnmount();
     this.questionComponent.onUnmount();
+    this.answerComponent.onUnmount();
   }
 
-  startRound() {
+  async startRound() {
     console.log(`Пользователь начал раунд ${this.currentRoundNumber}`);
 
     this.roundNumberComponent.updateProps({ number: this.currentRoundNumber });
@@ -71,10 +89,10 @@ export class Trainer {
     this.currentQuestionNumber = 1;
     this.questionsCount = this.questionsList.length;
 
-    this.startQuestion();
+    await this.startQuestion();
   }
 
-  finishRound() {
+  async finishRound() {
     console.log("Пользователь завершил раунд");
 
     if (this.hasMistakes()) {
@@ -84,15 +102,15 @@ export class Trainer {
 
       ++this.currentRoundNumber;
 
-      this.startRound();
+      await this.startRound();
     } else {
       console.log("Список ошибок пуст");
 
-      this.finishLesson();
+      await this.finishLesson();
     }
   }
 
-  startQuestion() {
+  async startQuestion() {
     console.log(`Пользователь начал вопрос ${this.currentQuestionNumber}`);
 
     this.questionNumberComponent.updateProps({
@@ -100,18 +118,23 @@ export class Trainer {
       count: this.questionsCount,
     });
 
-    const questionId = this.questionsList.shift();
+    this.currentQuestionId = this.questionsList.shift();
 
-    console.log(`ID вопроса: ${questionId}`);
+    console.log(`ID вопроса: ${this.currentQuestionId}`);
 
-    this.questionComponent.updateProps({ id: questionId });
+    const questionHTML = await APIGetQuestionById(this.currentQuestionId);
 
-    this.questionComponent.clearAnswerInput();
-    this.questionComponent.enableAnswerInput();
-    this.questionComponent.focusAnswerInput();
+    console.log(`HTML вопроса:\n${questionHTML}`);
+
+    this.questionComponent.updateProps({ html: questionHTML });
+
+    this.answerComponent.enableAnswerInput();
+    this.answerComponent.clearAnswerInput();
+    this.answerComponent.focusAnswerInput();
+    this.answerComponent.enableSendAnswerButton();
   }
 
-  finishQuestion() {
+  async finishQuestion() {
     console.log("Пользователь завершил вопрос");
 
     if (this.hasQuestions()) {
@@ -119,11 +142,11 @@ export class Trainer {
 
       ++this.currentQuestionNumber;
 
-      this.startQuestion();
+      await this.startQuestion();
     } else {
       console.log("Список вопросов пуст");
 
-      this.finishRound();
+      await this.finishRound();
     }
   }
 
