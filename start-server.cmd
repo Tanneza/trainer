@@ -1,2 +1,1 @@
-docker rm -f trainer-server
 docker run --name trainer-server -v ./nginx.conf:/etc/nginx/conf.d/default.conf:ro -v ./frontend/:/var/www/html:ro -d -p 80:80 nginx
