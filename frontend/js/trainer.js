@@ -1,5 +1,6 @@
 import { Answer } from "./answer.js";
 import { startLesson as APIStartLesson, getQuestionById as APIGetQuestionById, checkAnswer as APICheckAnswer } from "./api.js";
+import { NotificationArea } from "./notificationArea.js";
 import { Question } from "./question.js";
 import { QuestionNumber } from "./questionNumber.js";
 import { RoundNumber } from "./roundNumber.js";
@@ -14,10 +15,12 @@ export class Trainer {
     this.currentQuestionNumber = null;
     this.currentQuestionId = null;
     this.questionsCount = null;
+
     this.roundNumberComponent = null;
     this.questionNumberComponent = null;
     this.questionComponent = null;
     this.answerComponent = null;
+    this.notificationAreaComponent = null;
 
     this.onAnswer = this.onAnswer.bind(this);
   }
@@ -33,11 +36,13 @@ export class Trainer {
       this.questionNumberComponent = new QuestionNumber();
       this.questionComponent = new Question();
       this.answerComponent = new Answer({ onAnswer: this.onAnswer });
+      this.notificationAreaComponent = new NotificationArea();
 
       this.roundNumberComponent.onMount();
       this.questionNumberComponent.onMount();
       this.questionComponent.onMount();
       this.answerComponent.onMount();
+      this.notificationAreaComponent.onMount();
 
       this.currentRoundNumber = 1;
 
@@ -54,6 +59,7 @@ export class Trainer {
     this.questionNumberComponent.onUnmount();
     this.questionComponent.onUnmount();
     this.answerComponent.onUnmount();
+    this.notificationAreaComponent.onUnmount();
   }
 
   async startRound() {
@@ -148,9 +154,14 @@ export class Trainer {
       console.log(`Результат проверки ответа: ${checkResult}`);
 
       if (checkResult === true) {
-        alert("Правильно!");
+        this.notificationAreaComponent.add({
+          text: `(${this.currentRoundNumber}.${this.currentQuestionNumber}) Правильно!`,
+        });
       } else {
-        alert(`Неправильно! ${mistakeDetails}`);
+        this.notificationAreaComponent.add({
+          text: `(${this.currentRoundNumber}.${this.currentQuestionNumber}) Неправильно. ${mistakeDetails}`,
+          type: "warning",
+        });
 
         this.mistakesList.push(this.currentQuestionId);
       }
