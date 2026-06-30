@@ -18,43 +18,21 @@ export class Trainer {
     this.questionNumberComponent = null;
     this.questionComponent = null;
     this.answerComponent = null;
+
+    this.onAnswer = this.onAnswer.bind(this);
   }
 
   async startLesson() {
     console.log("Пользователь начал урок");
 
-    this.questionsList = await APIStartLesson(this.questionType);
+    const { question_ids: questionIds } = await APIStartLesson(this.questionType);
+    this.questionsList = questionIds;
 
     if (this.hasQuestions()) {
       this.roundNumberComponent = new RoundNumber();
       this.questionNumberComponent = new QuestionNumber();
       this.questionComponent = new Question();
-      this.answerComponent = new Answer({
-        onAnswer: async (userAnswer) => {
-          console.log(`Ответ пользователя: "${userAnswer}"`);
-
-          if (userAnswer) {
-            this.answerComponent.disableAnswerInput();
-            this.answerComponent.disableSendAnswerButton();
-
-            const checkResult = await APICheckAnswer(this.currentQuestionId, userAnswer);
-
-            console.log(`Результат проверки ответа: ${checkResult}`);
-
-            if (checkResult === true) {
-              alert("Правильно!");
-            } else {
-              alert("Неправильно!");
-
-              this.mistakesList.push(this.currentQuestionId);
-            }
-
-            await this.finishQuestion();
-          } else {
-            console.warn("Поле для ввода ответа пустое");
-          }
-        },
-      });
+      this.answerComponent = new Answer({ onAnswer: this.onAnswer });
 
       this.roundNumberComponent.onMount();
       this.questionNumberComponent.onMount();
@@ -122,7 +100,7 @@ export class Trainer {
 
     console.log(`ID вопроса: ${this.currentQuestionId}`);
 
-    const questionHTML = await APIGetQuestionById(this.currentQuestionId);
+    const { html: questionHTML } = await APIGetQuestionById(this.currentQuestionId);
 
     console.log(`HTML вопроса:\n${questionHTML}`);
 
@@ -156,5 +134,30 @@ export class Trainer {
 
   hasMistakes() {
     return this.mistakesList.length > 0;
+  }
+
+  async onAnswer(userAnswer) {
+    console.log(`Ответ пользователя: "${userAnswer}"`);
+
+    if (userAnswer) {
+      this.answerComponent.disableAnswerInput();
+      this.answerComponent.disableSendAnswerButton();
+
+      const { result: checkResult, mistake_details: mistakeDetails } = await APICheckAnswer(this.currentQuestionId, userAnswer);
+
+      console.log(`Результат проверки ответа: ${checkResult}`);
+
+      if (checkResult === true) {
+        alert("Правильно!");
+      } else {
+        alert(`Неправильно! ${mistakeDetails}`);
+
+        this.mistakesList.push(this.currentQuestionId);
+      }
+
+      await this.finishQuestion();
+    } else {
+      console.warn("Поле для ввода ответа пустое");
+    }
   }
 }
