@@ -3,6 +3,7 @@ export class Answer {
     this.onAnswer = props.onAnswer;
 
     this.onSendAnswerButton = this.onSendAnswerButton.bind(this);
+    this.onKeyDownInput = this.onKeyDownInput.bind(this);
   }
 
   updateProps(props = {}) {
@@ -15,6 +16,7 @@ export class Answer {
 
   async onMount() {
     document.getElementById("send-answer-button").addEventListener("click", this.onSendAnswerButton);
+    document.getElementById("answer-input").addEventListener("keydown", this.onKeyDownInput);
 
     this.disableAnswerInput();
     this.disableSendAnswerButton();
@@ -24,6 +26,7 @@ export class Answer {
 
   onUnmount() {
     document.getElementById("send-answer-button").removeEventListener("click", this.onSendAnswerButton);
+    document.getElementById("answer-input").removeEventListener("keydown", this.onKeyDownInput);
   }
 
   render() {}
@@ -33,6 +36,20 @@ export class Answer {
 
     console.log("Нажата кнопка отправки ответа");
 
+    this.handleAnswer();
+  }
+
+  async onKeyDownInput(e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      console.log("Нажата клавиша Enter в поле ответа");
+
+      this.handleAnswer();
+    }
+  }
+
+  handleAnswer() {
     const userAnswer = document.getElementById("answer-input").value;
 
     typeof this.onAnswer === "function" && this.onAnswer(userAnswer);
