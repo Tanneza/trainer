@@ -7,13 +7,12 @@ export class NotificationArea {
   updateProps(props = {}) {
     if (props.notifications !== undefined) {
       this.notifications = props.notifications;
+      this.render();
     }
 
     if (props.autoRemoveTimeout !== undefined) {
       this.autoRemoveTimeout = props.autoRemoveTimeout;
     }
-
-    this.render();
   }
 
   onMount() {
@@ -30,7 +29,6 @@ export class NotificationArea {
     }, this.autoRemoveTimeout);
 
     this.notifications.push(notification);
-
     this.render();
 
     return notification.id;
@@ -38,11 +36,11 @@ export class NotificationArea {
 
   remove(notificationId) {
     const index = this.notifications.findIndex((n) => n.id === notificationId);
+
     if (index !== -1) {
       this.notifications.splice(index, 1);
+      this.render();
     }
-
-    this.render();
   }
 
   async render() {
@@ -54,6 +52,7 @@ export class NotificationArea {
     }
 
     html += "</ul>";
+
     document.getElementById("notification-area").innerHTML = html;
   }
 }
