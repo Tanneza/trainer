@@ -12,11 +12,11 @@ export class LessonTypeSelectionView extends Component {
   }
 
   root() {
-    return document.getElementById("lesson-type-selection");
+    return document.getElementById("view");
   }
 
   async render() {
-    const response = await fetch("html/lessonTypeSelection.html");
+    const response = await fetch("html/lesson-type-selection.html");
     const html = await response.text();
     return html;
   }

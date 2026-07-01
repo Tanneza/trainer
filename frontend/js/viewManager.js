@@ -1,3 +1,4 @@
+import { LessonStatsView } from "./lessonStatsView.js";
 import { LessonTypeSelectionView } from "./lessonTypeSelectionView.js";
 import { LessonView } from "./lessonView.js";
 
@@ -51,6 +52,11 @@ export const viewManager = new ViewManager({
       path: "/lesson",
       name: "lesson",
       componentFactory: (props) => new LessonView(props),
+    },
+    {
+      path: "/lesson-stats",
+      name: "lesson-stats",
+      componentFactory: (props) => new LessonStatsView(props),
     },
   ],
 });

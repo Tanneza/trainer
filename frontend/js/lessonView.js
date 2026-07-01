@@ -5,6 +5,7 @@ import { Question } from "./question.js";
 import { QuestionNumber } from "./questionNumber.js";
 import { RoundNumber } from "./roundNumber.js";
 import * as backendApi from "./backendApi.js";
+import { viewManager } from "./viewManager.js";
 
 export class LessonView extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export class LessonView extends Component {
   }
 
   root() {
-    return document.getElementById("lesson");
+    return document.getElementById("view");
   }
 
   async render() {
@@ -76,6 +77,8 @@ export class LessonView extends Component {
 
   async finishLesson() {
     console.log("Пользователь завершил урок");
+
+    viewManager.push({ name: "lesson-stats" });
   }
 
   async startRound() {
