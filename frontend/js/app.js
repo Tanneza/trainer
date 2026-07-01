@@ -13,8 +13,8 @@ export class App extends Component {
 
   async render() {
     const response = await fetch("html/app.html");
-    const template = await response.text();
-    return template;
+    const html = await response.text();
+    return html;
   }
 
   async onMount() {

@@ -31,8 +31,8 @@ export class LessonView extends Component {
 
   async render() {
     const response = await fetch("html/lesson.html");
-    const template = await response.text();
-    return template;
+    const html = await response.text();
+    return html;
   }
 
   updateProps(props) {
