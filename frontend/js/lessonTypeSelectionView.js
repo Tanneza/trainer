@@ -1,6 +1,9 @@
-export class LessonTypeSelectionView {
-  constructor(props = {}) {
-    this.onStartLesson = props.onStartLesson;
+import { Component } from "./component.js";
+import { viewManager } from "./viewManager.js";
+
+export class LessonTypeSelectionView extends Component {
+  constructor(props) {
+    super(props);
 
     this.onStartLessonHanziToneButton = this.onStartLessonHanziToneButton.bind(this);
     this.onStartLessonPynyinToneButton = this.onStartLessonPynyinToneButton.bind(this);
@@ -8,10 +11,13 @@ export class LessonTypeSelectionView {
     this.onStartLessonPynyinTranslationButton = this.onStartLessonPynyinTranslationButton.bind(this);
   }
 
-  updateProps(props = {}) {
-    if (props.onStartLesson !== undefined) {
-      this.onStartLesson = props.onStartLesson;
-    }
+  root() {
+    return document.getElementById("lesson-type-selection");
+  }
+
+  async render() {
+    const html = await fetch("html/lessonTypeSelection.html");
+    return await html.text();
   }
 
   onMount() {
@@ -28,26 +34,12 @@ export class LessonTypeSelectionView {
     document.getElementById("start-lesson-pynyin-translation-button").removeEventListener("click", this.onStartLessonPynyinTranslationButton);
   }
 
-  show() {
-    const el = document.getElementById("lesson-type-selection-screen");
-    el.style.display = "block";
-
-    this.onMount();
-  }
-
-  hide() {
-    const el = document.getElementById("lesson-type-selection-screen");
-    el.style.display = "none";
-
-    this.onUnmount();
-  }
-
   onStartLessonHanziToneButton(e) {
     e.preventDefault();
 
     console.log("Нажата кнопка начало урока Кандзи - Тоны");
 
-    typeof this.onStartLesson === "function" && this.onStartLesson("tone_hanzi");
+    this.onStartLesson("tone_hanzi");
   }
 
   onStartLessonPynyinToneButton(e) {
@@ -55,7 +47,7 @@ export class LessonTypeSelectionView {
 
     console.log("Нажата кнопка начало урока Пиньинь - Тоны");
 
-    typeof this.onStartLesson === "function" && this.onStartLesson("tone_pinyin");
+    this.onStartLesson("tone_pinyin");
   }
 
   onStartLessonHanziTranslationButton(e) {
@@ -63,7 +55,7 @@ export class LessonTypeSelectionView {
 
     console.log("Нажата кнопка начало урока Кандзи - Перевод");
 
-    typeof this.onStartLesson === "function" && this.onStartLesson("translation_hanzi");
+    this.onStartLesson("translation_hanzi");
   }
 
   onStartLessonPynyinTranslationButton(e) {
@@ -71,6 +63,10 @@ export class LessonTypeSelectionView {
 
     console.log("Нажата кнопка начало урока Пиньинь - Перевод");
 
-    typeof this.onStartLesson === "function" && this.onStartLesson("translation_pinyin");
+    this.onStartLesson("translation_pinyin");
+  }
+
+  onStartLesson(questionType) {
+    viewManager.push({ name: "lesson", props: { questionType } });
   }
 }
