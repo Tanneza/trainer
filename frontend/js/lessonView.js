@@ -105,6 +105,11 @@ export class LessonView extends Component {
 
       ++this.currentRoundNumber;
 
+      notifications.add({
+        text: `Раунд ${this.currentRoundNumber}. Поработаем над ошибками!`,
+        type: "warning",
+      });
+
       await this.startRound();
     } else {
       console.log("Список ошибок пуст");
