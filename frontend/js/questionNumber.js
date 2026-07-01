@@ -1,30 +1,32 @@
-export class QuestionNumber {
-  constructor(props = {}) {
-    this.number = props.number;
-    this.count = props.count;
+import { Component } from "./component.js";
+
+export class QuestionNumber extends Component {
+  constructor(props) {
+    super(props);
+
+    this.number = props?.number;
+    this.count = props?.count;
   }
 
-  updateProps(props = {}) {
-    if (props.number !== undefined) {
+  updateProps(props) {
+    if (props?.number !== undefined) {
       this.number = props.number;
     }
 
-    if (props.count !== undefined) {
+    if (props?.count !== undefined) {
       this.count = props.count;
     }
 
-    this.render();
+    super.updateProps(props);
   }
 
-  onMount() {
-    this.render();
+  root() {
+    return document.getElementById("question-number");
   }
 
-  onUnmount() {}
-
-  render() {
+  async render() {
     const number = this.number ?? "?";
     const count = this.count ?? "?";
-    document.getElementById("question-number").textContent = `Вопрос ${number} из ${count}`;
+    return `Вопрос ${number} из ${count}`;
   }
 }

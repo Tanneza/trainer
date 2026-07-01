@@ -44,19 +44,19 @@ export class LessonView extends Component {
   }
 
   onMount() {
-    this.roundNumberComponent.onMount();
-    this.questionNumberComponent.onMount();
-    this.questionComponent.onMount();
-    this.answerComponent.onMount();
+    this.roundNumberComponent.mount();
+    this.questionNumberComponent.mount();
+    this.questionComponent.mount();
+    this.answerComponent.mount();
 
     this.startLesson();
   }
 
   onUnmount() {
-    this.roundNumberComponent.onUnmount();
-    this.questionNumberComponent.onUnmount();
-    this.questionComponent.onUnmount();
-    this.answerComponent.onUnmount();
+    this.roundNumberComponent.unmount();
+    this.questionNumberComponent.unmount();
+    this.questionComponent.unmount();
+    this.answerComponent.unmount();
   }
 
   async startLesson() {

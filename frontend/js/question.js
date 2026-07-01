@@ -1,23 +1,25 @@
-export class Question {
-  constructor(props = {}) {
-    this.html = props.html;
+import { Component } from "./component.js";
+
+export class Question extends Component {
+  constructor(props) {
+    super(props);
+
+    this.html = props?.html;
   }
 
-  async updateProps(props = {}) {
-    if (props.html !== undefined) {
+  async updateProps(props) {
+    if (props?.html !== undefined) {
       this.html = props.html;
     }
 
-    this.render();
+    super.updateProps(props);
   }
 
-  async onMount() {
-    this.render();
+  root() {
+    return document.getElementById("question-html");
   }
 
-  onUnmount() {}
-
-  render() {
-    document.getElementById("question-html").innerHTML = this.html;
+  async render() {
+    return this.html;
   }
 }

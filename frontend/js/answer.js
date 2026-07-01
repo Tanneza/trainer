@@ -1,17 +1,21 @@
-export class Answer {
-  constructor(props = {}) {
-    this.onAnswer = props.onAnswer;
+import { Component } from "./component.js";
+
+export class Answer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onAnswer = props?.onAnswer;
 
     this.onSendAnswerButton = this.onSendAnswerButton.bind(this);
     this.onKeyDownInput = this.onKeyDownInput.bind(this);
   }
 
-  updateProps(props = {}) {
-    if (props.onAnswer !== undefined) {
+  updateProps(props) {
+    if (props?.onAnswer !== undefined) {
       this.onAnswer = props.onAnswer;
     }
 
-    this.render();
+    super.updateProps(props);
   }
 
   async onMount() {
@@ -20,16 +24,12 @@ export class Answer {
 
     this.disableAnswerInput();
     this.disableSendAnswerButton();
-
-    this.render();
   }
 
   onUnmount() {
     document.getElementById("send-answer-button").removeEventListener("click", this.onSendAnswerButton);
     document.getElementById("answer-input").removeEventListener("keydown", this.onKeyDownInput);
   }
-
-  render() {}
 
   async onSendAnswerButton(e) {
     e.preventDefault();

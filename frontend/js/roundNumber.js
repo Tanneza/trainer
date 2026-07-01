@@ -1,24 +1,26 @@
-export class RoundNumber {
-  constructor(props = {}) {
-    this.number = props.number;
+import { Component } from "./component.js";
+
+export class RoundNumber extends Component {
+  constructor(props) {
+    super(props);
+
+    this.number = props?.number;
   }
 
-  updateProps(props = {}) {
-    if (props.number !== undefined) {
+  updateProps(props) {
+    if (props?.number !== undefined) {
       this.number = props.number;
     }
 
-    this.render();
+    super.updateProps(props);
   }
 
-  onMount() {
-    this.render();
+  root() {
+    return document.getElementById("round-number");
   }
 
-  onUnmount() {}
-
-  render() {
+  async render() {
     const number = this.number ?? "?";
-    document.getElementById("round-number").textContent = `Раунд ${number}`;
+    return `Раунд ${number}`;
   }
 }
