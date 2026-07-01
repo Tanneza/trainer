@@ -4,7 +4,7 @@ import { notifications } from "./notifications.js";
 import { Question } from "./question.js";
 import { QuestionNumber } from "./questionNumber.js";
 import { RoundNumber } from "./roundNumber.js";
-import { startLesson as APIStartLesson, getQuestionById as APIGetQuestionById, checkAnswer as APICheckAnswer } from "./api.js";
+import * as backendApi from "./backendApi.js";
 
 export class LessonView extends Component {
   constructor(props) {
@@ -61,7 +61,7 @@ export class LessonView extends Component {
   async startLesson() {
     console.log("Пользователь начал урок");
 
-    const { question_ids: questionIds } = await APIStartLesson(this.questionType);
+    const { question_ids: questionIds } = await backendApi.startLesson(this.questionType);
     this.questionsList = questionIds;
 
     if (this.hasQuestions()) {
@@ -121,7 +121,7 @@ export class LessonView extends Component {
 
     console.log(`ID вопроса: ${this.currentQuestionId}`);
 
-    const { html: questionHTML } = await APIGetQuestionById(this.currentQuestionId);
+    const { html: questionHTML } = await backendApi.getQuestionById(this.currentQuestionId);
 
     console.log(`HTML вопроса:\n${questionHTML}`);
 
@@ -164,7 +164,7 @@ export class LessonView extends Component {
       this.answerComponent.disableAnswerInput();
       this.answerComponent.disableSendAnswerButton();
 
-      const { result: checkResult, mistake_details: mistakeDetails } = await APICheckAnswer(this.currentQuestionId, userAnswer);
+      const { result: checkResult, mistake_details: mistakeDetails } = await backendApi.checkAnswer(this.currentQuestionId, userAnswer);
 
       console.log(`Результат проверки ответа: ${checkResult}`);
 
