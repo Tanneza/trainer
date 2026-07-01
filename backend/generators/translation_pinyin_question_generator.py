@@ -13,18 +13,23 @@ class TranslationPinyinQuestionGenerator(QuestionGenerator):
         question_list = []
         for word in self._dictionary.get_words_list():
             question_type = QuestionType.TRANSLATION_PINYIN
-            html_template = question_service.get_question_template_by_type(question_type)
-            if len(word.translations) == 1:
-                mistake_details = f"Перевод слова: {word.translations[0]}"
+            existing_question = question_service.get_question_by_type_and_word_id(question_type, word.word_id)
+            if existing_question:
+                question = existing_question
             else:
-                mistake_details = f"Варианты перевода слова: {", ".join(word.translations)}"
-            question = Question(
-                question_type=question_type,
-                html=html_template.format(pinyin=word.pinyin, hanzi=word.hanzi),
-                #text=f"Какой перевод у слова {word.pinyin} ({word.hanzi})?: ",
-                answers=word.translations,
-                mistake_details=mistake_details
-            )
+                html_template = question_service.get_question_template_by_type(question_type)
+                if len(word.translations) == 1:
+                    mistake_details = f"Перевод слова: {word.translations[0]}"
+                else:
+                    mistake_details = f"Варианты перевода слова: {", ".join(word.translations)}"
+                question = Question(
+                    question_type=question_type,
+                    word_id=word.word_id,
+                    html=html_template.format(pinyin=word.pinyin, hanzi=word.hanzi),
+                    answers=word.translations,
+                    mistake_details=mistake_details
+                )
+                question_service.add_question(question)
 
             question_list.append(question)
 

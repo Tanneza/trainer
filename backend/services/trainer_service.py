@@ -15,8 +15,6 @@ dictionary = create_dictionary()
 def generate_questions_list_by_type(question_type: QuestionType) -> list[int]:
     generator = get_question_generator(question_type)
     questions_list = generator.generate()
-    for q in questions_list:
-        question_service.add_question(q)
     random.shuffle(questions_list)
     return [q.question_id for q in questions_list]
 

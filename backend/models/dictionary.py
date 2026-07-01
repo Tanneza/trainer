@@ -4,6 +4,7 @@ from models.word import Word
 class Dictionary:
     def __init__(self):
         self.words_list: list[Word] = []
+        self.next_word_id = 0
 
 
     def load(self, filename: str):
@@ -14,7 +15,8 @@ class Dictionary:
             for line in file:
                 hanzi, pinyin, tone, translations_str = line.split("\t")
                 translations = [t.strip() for t in translations_str.split(",")]
-                words_list.append(Word(hanzi.strip(), pinyin.strip(), int(tone.strip()), translations))
+                words_list.append(Word(self.next_word_id, hanzi.strip(), pinyin.strip(), int(tone.strip()), translations))
+                self.next_word_id += 1
 
         self.words_list.extend(words_list)
 

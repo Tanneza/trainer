@@ -14,14 +14,19 @@ class TonePinyinQuestionGenerator(QuestionGenerator):
 
         for word in self._dictionary.get_words_list():
             question_type = QuestionType.TONE_PINYIN
-            html_template = question_service.get_question_template_by_type(question_type)
-            question = Question(
-                question_type=question_type,
-                html=html_template.format(pinyin=word.pinyin, hanzi=word.hanzi, translations=", ".join(word.translations)),
-                #text=f"Какие номера тонов у слова {word.pinyin} ({word.hanzi} - {", ".join(word.translations)})?: ",
-                answers=[str(word.tone)],
-                mistake_details=f"Это тон {word.tone}"
-            )
+            existing_question = question_service.get_question_by_type_and_word_id(question_type, word.word_id)
+            if existing_question:
+                question = existing_question
+            else:
+                html_template = question_service.get_question_template_by_type(question_type)
+                question = Question(
+                    question_type=question_type,
+                    word_id=word.word_id,
+                    html=html_template.format(pinyin=word.pinyin, hanzi=word.hanzi, translations=", ".join(word.translations)),
+                    answers=[str(word.tone)],
+                    mistake_details=f"Это тон {word.tone}"
+                )
+                question_service.add_question(question)
 
             questions_list.append(question)
 
