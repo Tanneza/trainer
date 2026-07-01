@@ -1,4 +1,4 @@
-export class NotificationArea {
+class Notifications {
   constructor(props = {}) {
     this.notifications = props.notifications ?? [];
     this.autoRemoveTimeout = props.autoRemoveTimeout ?? 15000;
@@ -15,11 +15,11 @@ export class NotificationArea {
     }
   }
 
-  onMount() {
-    this.render();
-  }
+  //onMount() {
+  //  this.render();
+  //}
 
-  onUnmount() {}
+  //onUnmount() {}
 
   add(notification) {
     notification.id = notification.id ?? crypto.randomUUID();
@@ -53,6 +53,8 @@ export class NotificationArea {
 
     html += "</ul>";
 
-    document.getElementById("notification-area").innerHTML = html;
+    document.getElementById("notifications").innerHTML = html;
   }
 }
+
+export const notifications = new Notifications();
