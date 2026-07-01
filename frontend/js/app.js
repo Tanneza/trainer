@@ -1,4 +1,6 @@
 import { Component } from "./component.js";
+import { viewManager } from "./viewManager.js";
+import { notifications } from "./notifications.js";
 
 export class App extends Component {
   constructor(props) {
@@ -10,7 +12,14 @@ export class App extends Component {
   }
 
   async render() {
-    const html = await fetch("html/app.html");
-    return await html.text();
+    const response = await fetch("html/app.html");
+    const template = await response.text();
+    return template;
+  }
+
+  async onMount() {
+    viewManager.push({ name: "lesson-type-selection" });
+
+    await notifications.mount();
   }
 }

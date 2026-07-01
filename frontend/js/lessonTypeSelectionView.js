@@ -16,8 +16,9 @@ export class LessonTypeSelectionView extends Component {
   }
 
   async render() {
-    const html = await fetch("html/lessonTypeSelection.html");
-    return await html.text();
+    const response = await fetch("html/lessonTypeSelection.html");
+    const template = await response.text();
+    return template;
   }
 
   onMount() {

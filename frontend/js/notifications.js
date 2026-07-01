@@ -1,27 +1,23 @@
-class Notifications {
-  constructor(props = {}) {
-    this.notifications = props.notifications ?? [];
-    this.autoRemoveTimeout = props.autoRemoveTimeout ?? 15000;
+import { Component } from "./component.js";
+
+class Notifications extends Component {
+  constructor(props) {
+    super(props);
+
+    this.autoRemoveTimeout = props?.autoRemoveTimeout ?? 15000;
+
+    this.notifications = [];
   }
 
-  updateProps(props = {}) {
-    if (props.notifications !== undefined) {
-      this.notifications = props.notifications;
-      this.render();
-    }
-
-    if (props.autoRemoveTimeout !== undefined) {
+  updateProps(props) {
+    if (props?.autoRemoveTimeout !== undefined) {
       this.autoRemoveTimeout = props.autoRemoveTimeout;
     }
+
+    super.updateProps(props);
   }
 
-  //onMount() {
-  //  this.render();
-  //}
-
-  //onUnmount() {}
-
-  add(notification) {
+  async add(notification) {
     notification.id = notification.id ?? crypto.randomUUID();
 
     setTimeout(() => {
@@ -29,7 +25,7 @@ class Notifications {
     }, this.autoRemoveTimeout);
 
     this.notifications.push(notification);
-    this.render();
+    this.updateProps();
 
     return notification.id;
   }
@@ -39,8 +35,12 @@ class Notifications {
 
     if (index !== -1) {
       this.notifications.splice(index, 1);
-      this.render();
+      this.updateProps();
     }
+  }
+
+  root() {
+    return document.getElementById("notifications");
   }
 
   async render() {
@@ -53,7 +53,7 @@ class Notifications {
 
     html += "</ul>";
 
-    document.getElementById("notifications").innerHTML = html;
+    return html;
   }
 }
 
