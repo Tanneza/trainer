@@ -13,6 +13,14 @@ def start_lesson(question_type: str = Form(...)) -> dict:
         "question_ids": question_ids
     }
 
+@router.get("/lessons/{lesson_id}/statistics")
+def get_lesson_statistics(lesson_id: int) -> dict:
+    return {
+        "score": 0,
+        "total": 0,
+        "rate": 0.0
+    }
+
 
 @router.get("/questions/{question_id}")
 def get_question_by_id(question_id: int) -> dict:
