@@ -11,6 +11,7 @@ def start_lesson(question_type: str = Form(...)) -> dict:
     question_type_enum = QuestionType[question_type.upper()]
     question_ids = trainer_service.generate_questions_list_by_type(question_type_enum)
     return {
+        "lesson_id": 0,
         "question_ids": question_ids
     }
 
@@ -29,5 +30,10 @@ def get_question_by_id(question_id: int) -> dict:
 
 
 @router.post("/questions/{question_id}/check_answer")
-def check_user_answer(question_id: int, user_answer: str = Form(...)) -> dict:
-    return trainer_service.check_user_answer(question_id, user_answer)
+def check_user_answer(
+        question_id: int,
+        lesson_id: int = Form(...),
+        user_answer: str = Form(...)
+    ) -> dict:
+    #lesson_id = 100
+    return trainer_service.check_user_answer(question_id, lesson_id, user_answer)
