@@ -1,5 +1,6 @@
 import random
 
+from event_manager import event_manager
 from services.dictionary_service import create_dictionary
 from generators.question_generator import QuestionGenerator
 from services.question_service import question_service
@@ -27,11 +28,16 @@ def get_question_by_id(question_id: int) -> str:
 def check_user_answer(question_id: int, user_answer: str) -> dict:
     question = question_service.get_question_by_id(question_id)
     check_result = question.check(user_answer)
+    event_manager.notify("user_answer")
     result = {
         "result": check_result
     }
-    if not check_result:
+
+    if check_result:
+        event_manager.notify("user_correct_answer")
+    else:
         result["mistake_details"] = question.mistake_details
+
     return result
 
 

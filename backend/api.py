@@ -2,6 +2,7 @@ from fastapi import APIRouter, Form
 
 from services import trainer_service
 from models.question_type import QuestionType
+from services.statistics_service import statistics_service
 
 router = APIRouter()
 
@@ -13,13 +14,10 @@ def start_lesson(question_type: str = Form(...)) -> dict:
         "question_ids": question_ids
     }
 
+
 @router.get("/lessons/{lesson_id}/statistics")
 def get_lesson_statistics(lesson_id: int) -> dict:
-    return {
-        "score": 0,
-        "total": 0,
-        "rate": 0.0
-    }
+    return statistics_service.lesson_statistics(lesson_id)
 
 
 @router.get("/questions/{question_id}")
