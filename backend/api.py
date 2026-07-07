@@ -1,17 +1,20 @@
 from fastapi import APIRouter, Form
 
+from models.lesson import lesson_manager
 from services import trainer_service
 from models.question_type import QuestionType
 from services.statistics_service import statistics_service
 
 router = APIRouter()
 
+
 @router.post("/lessons")
 def start_lesson(question_type: str = Form(...)) -> dict:
+    new_lesson_id = lesson_manager.create_new_lesson()
     question_type_enum = QuestionType[question_type.upper()]
     question_ids = trainer_service.generate_questions_list_by_type(question_type_enum)
     return {
-        "lesson_id": 0,
+        "lesson_id": new_lesson_id,
         "question_ids": question_ids
     }
 
@@ -35,5 +38,4 @@ def check_user_answer(
         lesson_id: int = Form(...),
         user_answer: str = Form(...)
     ) -> dict:
-    #lesson_id = 100
     return trainer_service.check_user_answer(question_id, lesson_id, user_answer)

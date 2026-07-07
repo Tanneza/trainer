@@ -13,11 +13,11 @@ class EventManager:
         self.observers[event_name].append(observer)
 
 
-    def notify(self, event_name):
+    def notify(self, event_name: str, event_params: dict):
         if event_name not in self.observers:
             return
         for observer in self.observers[event_name]:
-            observer()
+            observer(event_params)
 
 
 event_manager = EventManager()
