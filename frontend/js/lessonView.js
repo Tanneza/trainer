@@ -13,7 +13,6 @@ export class LessonView extends Component {
 
     this.questionType = props?.questionType;
 
-    this.lessonId = null;
     this.questionsList = null;
     this.mistakesList = null;
     this.currentRoundNumber = null;
@@ -64,8 +63,7 @@ export class LessonView extends Component {
   async startLesson() {
     console.log("Пользователь начал урок");
 
-    const { lesson_id: lessonId, question_ids: questionIds } = await backendApi.startLesson(this.questionType);
-    this.lessonId = lessonId;
+    const { question_ids: questionIds } = await backendApi.startLesson(this.questionType);
     this.questionsList = questionIds;
 
     if (this.hasQuestions()) {
@@ -80,17 +78,7 @@ export class LessonView extends Component {
   async finishLesson() {
     console.log("Пользователь завершил урок");
 
-    const stats = await backendApi.getLessonStatistics(this.lessonId);
-
-    viewManager.push({
-      name: "lesson-stats",
-      props: {
-        questionsCount: stats.total,
-        correctAnswersCount: stats.score,
-        correctAnswersRate: stats.rate,
-        roundsCount: this.currentRoundNumber,
-      },
-    });
+    viewManager.push({ name: "lesson-stats" });
   }
 
   async startRound() {
@@ -185,11 +173,7 @@ export class LessonView extends Component {
       this.answerComponent.disableAnswerInput();
       this.answerComponent.disableSendAnswerButton();
 
-      const { result: checkResult, mistake_details: mistakeDetails } = await backendApi.checkAnswer(
-        this.lessonId,
-        this.currentQuestionId,
-        userAnswer,
-      );
+      const { result: checkResult, mistake_details: mistakeDetails } = await backendApi.checkAnswer(this.currentQuestionId, userAnswer);
 
       console.log(`Результат проверки ответа: ${checkResult}`);
 

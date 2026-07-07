@@ -25,7 +25,7 @@ def get_question_by_id(question_id: int) -> str:
     return question.html
 
 
-def check_user_answer(lesson_id: int, question_id: int, user_answer: str) -> dict:
+def check_user_answer(question_id: int, user_answer: str) -> dict:
     question = question_service.get_question_by_id(question_id)
     check_result = question.check(user_answer)
     event_manager.notify("user_answer")
