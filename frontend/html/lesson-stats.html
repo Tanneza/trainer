@@ -1,4 +1,9 @@
 <div class="d-flex flex-column w-500px mx-auto">
   <h2 class="text-center pb-4 mb-4 border-bottom">Урок завершён</h2>
   <h3>Статистика урока:</h3>
+  <p>
+    Итоговый счет: {{ correctAnswersCount }}/{{ questionsCount }}<br />
+    Точность ответов: {{ correctAnswersRate }}<br />
+    Потребовалось раундов: {{ roundsCount }}
+  </p>
 </div>
