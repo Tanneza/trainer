@@ -19,6 +19,11 @@ def start_lesson(question_type: str = Form(...)) -> dict:
     }
 
 
+@router.get("/lessons/lesson_types")
+def get_lesson_types() -> dict:
+    return trainer_service.get_lesson_types()
+
+
 @router.get("/lessons/{lesson_id}/statistics")
 def get_lesson_statistics(lesson_id: int) -> dict:
     return statistics_service.lesson_statistics(lesson_id)

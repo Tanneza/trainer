@@ -52,3 +52,25 @@ def get_question_generator(question_type: QuestionType) -> QuestionGenerator | N
         return TranslationHanziQuestionGenerator(dictionary)
     elif question_type == QuestionType.TRANSLATION_PINYIN:
         return TranslationPinyinQuestionGenerator(dictionary)
+
+
+def get_lesson_types() -> dict:
+    return {"lesson_types":[
+                                {
+                                    "title": "Ханьцзы - Тоны",
+                                    "code": "tone_hanzi"
+                                },
+                                {
+                                    "title": "Пиньинь - Тоны",
+                                    "code": "tone_pinyin"
+                                },
+                                {
+                                    "title": "Ханьцзы - Перевод",
+                                    "code": "translation_hanzi"
+                                },
+                                {
+                                    "title": "Пиньинь - Перевод",
+                                    "code": "translation_pinyin"
+                                }
+                            ]
+            }
