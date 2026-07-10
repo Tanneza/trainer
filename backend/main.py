@@ -2,9 +2,6 @@ from fastapi import FastAPI
 
 import api
 
-# train = Trainer(dictionary)
-# train.run_trainer()
-
 
 app = FastAPI()
 app.include_router(api.router)
