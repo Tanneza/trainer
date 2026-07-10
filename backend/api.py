@@ -1,11 +1,22 @@
 from fastapi import APIRouter, Form
 
+from daily_phrase.phrase_dictionary_service import phrase_of_day
 from lesson_manager import lesson_manager
 from services import trainer_service
 from models.question_type import QuestionType
 from services.statistics_service import statistics_service
 
 router = APIRouter()
+
+
+@router.get("/daily_phrase")
+def get_daily_phrase():
+    today_phrase = phrase_of_day.get_phrase()
+    return {
+        "hanzi": today_phrase.hanzi,
+        "pinyin": today_phrase.pinyin,
+        "translation": today_phrase.translation
+    }
 
 
 @router.post("/lessons")
