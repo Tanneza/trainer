@@ -1,14 +1,13 @@
 import { Component } from "./component.js";
 import { viewManager } from "./viewManager.js";
+import * as backendApi from "./backendApi.js";
 
 export class LessonTypeSelectionView extends Component {
   constructor(props) {
     super(props);
 
-    this.onStartLessonHanziToneButton = this.onStartLessonHanziToneButton.bind(this);
-    this.onStartLessonPynyinToneButton = this.onStartLessonPynyinToneButton.bind(this);
-    this.onStartLessonHanziTranslationButton = this.onStartLessonHanziTranslationButton.bind(this);
-    this.onStartLessonPynyinTranslationButton = this.onStartLessonPynyinTranslationButton.bind(this);
+    this.lessonTypes = [];
+    this.listeners = [];
   }
 
   root() {
@@ -22,52 +21,46 @@ export class LessonTypeSelectionView extends Component {
   }
 
   onMount() {
-    document.getElementById("start-lesson-hanzi-tone-button").addEventListener("click", this.onStartLessonHanziToneButton);
-    document.getElementById("start-lesson-pynyin-tone-button").addEventListener("click", this.onStartLessonPynyinToneButton);
-    document.getElementById("start-lesson-hanzi-translation-button").addEventListener("click", this.onStartLessonHanziTranslationButton);
-    document.getElementById("start-lesson-pynyin-translation-button").addEventListener("click", this.onStartLessonPynyinTranslationButton);
+    this.loadLessonTypes();
   }
 
   onUnmount() {
-    document.getElementById("start-lesson-hanzi-tone-button").removeEventListener("click", this.onStartLessonHanziToneButton);
-    document.getElementById("start-lesson-pynyin-tone-button").removeEventListener("click", this.onStartLessonPynyinToneButton);
-    document.getElementById("start-lesson-hanzi-translation-button").removeEventListener("click", this.onStartLessonHanziTranslationButton);
-    document.getElementById("start-lesson-pynyin-translation-button").removeEventListener("click", this.onStartLessonPynyinTranslationButton);
+    this.listeners.forEach(l => l.element.removeEventListener("click", l.func));
   }
 
-  onStartLessonHanziToneButton(e) {
+  async loadLessonTypes() {
+    const response = await backendApi.getLessonTypes();
+    this.lessonTypes = response["lesson_types"];
+
+    this.createButtons();
+  }
+
+  createButtons() {
+    const container = document.getElementById("lesson-types-list");
+    this.listeners = [];
+
+    for (const type of this.lessonTypes) {
+      const linkElem = document.createElement("a");
+      linkElem.textContent = type.title;
+      linkElem.dataset.lessonType = type.code;
+      linkElem.classList.add("btn", "btn-primary");
+      linkElem.href = "javascript:void(0)";
+
+      const listener = {element: linkElem, func: e => this.onStartLesson(e, type.code)};
+      this.listeners.push(listener);
+      linkElem.addEventListener("click", listener.func);
+
+      container.appendChild(linkElem);
+    }
+  }
+
+  onStartLesson(e) {
     e.preventDefault();
 
-    console.log("Нажата кнопка начало урока Кандзи - Тоны");
+    const linkElem = e.target;
 
-    this.onStartLesson("tone_hanzi");
-  }
+    console.log(`Нажата кнопка начала урока: ${linkElem.textContent}`);
 
-  onStartLessonPynyinToneButton(e) {
-    e.preventDefault();
-
-    console.log("Нажата кнопка начало урока Пиньинь - Тоны");
-
-    this.onStartLesson("tone_pinyin");
-  }
-
-  onStartLessonHanziTranslationButton(e) {
-    e.preventDefault();
-
-    console.log("Нажата кнопка начало урока Кандзи - Перевод");
-
-    this.onStartLesson("translation_hanzi");
-  }
-
-  onStartLessonPynyinTranslationButton(e) {
-    e.preventDefault();
-
-    console.log("Нажата кнопка начало урока Пиньинь - Перевод");
-
-    this.onStartLesson("translation_pinyin");
-  }
-
-  onStartLesson(questionType) {
-    viewManager.push({ name: "lesson", props: { questionType } });
+    viewManager.push({ name: "lesson", props: { questionType: linkElem.dataset.lessonType } });
   }
 }
