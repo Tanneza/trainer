@@ -1,4 +1,4 @@
-from daily_phrase.phrase import Phrase
+from models.phrase import Phrase
 
 
 class PhraseDictionary:

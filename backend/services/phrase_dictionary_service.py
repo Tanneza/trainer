@@ -1,5 +1,5 @@
-from daily_phrase.phrase_generator import PhraseGenerator
-from daily_phrase.phrase_dictionary import PhraseDictionary
+from generators.phrase_generator import PhraseGenerator
+from models.phrase_dictionary import PhraseDictionary
 
 prase_dictionaries = [
     "совет дня.csv"

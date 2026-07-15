@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Form
 
-from daily_phrase.phrase_dictionary_service import phrase_generator
+from services.phrase_dictionary_service import phrase_generator
 from lesson_manager import lesson_manager
 from services import trainer_service
 from models.question_type import QuestionType
@@ -9,7 +9,7 @@ from services.statistics_service import statistics_service
 router = APIRouter()
 
 
-@router.get("/daily_phrase")
+@router.get("/phrase_of_day")
 def get_phrase_of_day():
     phrase = phrase_generator.get_random_phrase()
     return {

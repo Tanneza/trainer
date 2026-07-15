@@ -1,7 +1,7 @@
 import random
 
-from daily_phrase.phrase_dictionary import PhraseDictionary
-from daily_phrase.phrase import Phrase
+from models.phrase_dictionary import PhraseDictionary
+from models.phrase import Phrase
 
 
 class PhraseGenerator:
