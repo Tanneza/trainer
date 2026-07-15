@@ -4,7 +4,3 @@ class Phrase:
         self.pinyin = pinyin
         self.translation = translation
         self.comments = comments
-
-
-    def __str__(self):
-        return f"{self.hanzi}\n({self.pinyin})\n{self.translation}"

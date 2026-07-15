@@ -6,7 +6,7 @@ class PhraseDictionary:
         self.phrases_list: list[Phrase] = []
 
 
-    def phrase_load(self, filename: str):
+    def load_from_file(self, filename: str):
         with open(f"dictionaries/{filename}", "r", encoding="utf-8") as file:
             file.readline()
             for line in file:
