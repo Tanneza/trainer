@@ -1,3 +1,15 @@
+export async function getLessonTypes() {
+  try {
+    const response = await fetch(`/api/lessons/lesson_types`, {
+      method: "GET",
+    });
+
+    return await response.json();
+  } catch (err) {
+    console.error("Ошибка!", err);
+  }
+}
+
 export async function startLesson(lessonType) {
   try {
     const formData = new FormData();
