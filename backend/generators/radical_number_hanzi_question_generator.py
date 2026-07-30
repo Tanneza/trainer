@@ -14,7 +14,7 @@ class RadicalNumberHanziQuestionGenerator(QuestionGenerator):
         questions_list = []
 
         for word in self._radicals_dictionary.get_radicals_list():
-            question_type = QuestionType.TONE_HANZI
+            question_type = QuestionType.RADICAL_NUMBER_HANZI
             existing_question = question_service.get_question_by_type_and_word_id(question_type, word.word_id)
             if existing_question:
                 question = existing_question
