@@ -84,6 +84,14 @@ def get_lesson_types() -> dict:
             {
                 "title": "Пиньинь - Перевод",
                 "code": "translation_pinyin"
+            },
+            {
+                "title": "Ханьцзы - Перевод ключа",
+                "code": "radical_translation_hanzi"
+            },
+            {
+                "title": "Ханьцзы - Номер ключа",
+                "code": "radical_number_hanzi"
             }
         ]
     }
