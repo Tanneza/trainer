@@ -1,6 +1,9 @@
 import random
 
 from event_manager import event_manager
+from generators.radical_number_hanzi_question_generator import RadicalNumberHanziQuestionGenerator
+from generators.radical_translation_hanzi_question_generator import RadicalTranslationHanziQuestionGenerator
+from services.radicals_dictionary_service import create_radicals_dictionary
 from services.dictionary_service import create_dictionary
 from generators.question_generator import QuestionGenerator
 from services.question_service import question_service
@@ -12,6 +15,7 @@ from generators.translation_pinyin_question_generator import TranslationPinyinQu
 
 
 dictionary = create_dictionary()
+radicals_dictionary = create_radicals_dictionary()
 
 
 def generate_questions_list_by_type(question_type: QuestionType) -> list[int]:
@@ -44,6 +48,8 @@ def check_user_answer(question_id: int, lesson_id: int, user_answer: str) -> dic
 
 def get_question_generator(question_type: QuestionType) -> QuestionGenerator | None:
     global dictionary
+    global radicals_dictionary
+
     if question_type == QuestionType.TONE_HANZI:
         return ToneHanziQuestionGenerator(dictionary)
     elif question_type == QuestionType.TONE_PINYIN:
@@ -52,6 +58,12 @@ def get_question_generator(question_type: QuestionType) -> QuestionGenerator | N
         return TranslationHanziQuestionGenerator(dictionary)
     elif question_type == QuestionType.TRANSLATION_PINYIN:
         return TranslationPinyinQuestionGenerator(dictionary)
+    elif question_type == QuestionType.RADICAL_TRANSLATION_HANZI:
+        return RadicalTranslationHanziQuestionGenerator(radicals_dictionary)
+    elif question_type == QuestionType.RADICAL_NUMBER_HANZI:
+        return RadicalNumberHanziQuestionGenerator(radicals_dictionary)
+    else:
+        raise Exception("Неизвестный тип")
 
 
 def get_lesson_types() -> dict:
