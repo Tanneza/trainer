@@ -16,7 +16,7 @@ class RadicalsDictionary:
             for line in file:
                 number, hanzi, pinyin, tone, translations_str = line.split("\t")
                 translations = [t.strip() for t in translations_str.split(",")]
-                self.radicals_list.append(Radical(self.next_id, int(number.strip()), hanzi.strip(), pinyin.strip(), int(tone.strip()), translations))
+                radicals_list.append(Radical(self.next_id, int(number.strip()), hanzi.strip(), pinyin.strip(), int(tone.strip()), translations))
                 self.next_id += 1
 
         self.radicals_list.extend(radicals_list)
