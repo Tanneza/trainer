@@ -11,12 +11,8 @@ router = APIRouter()
 
 @router.get("/phrase_of_day")
 def get_phrase_of_day():
-    phrase = phrase_generator.get_random_phrase()
-    return {
-        "hanzi": phrase.hanzi,
-        "pinyin": phrase.pinyin,
-        "translation": phrase.translation
-    }
+    html_phrase = phrase_generator.get_rendered_phrase()
+    return html_phrase
 
 
 @router.post("/lessons")
