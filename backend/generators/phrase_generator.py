@@ -11,3 +11,19 @@ class PhraseGenerator:
 
     def get_random_phrase(self) -> Phrase:
         return random.choice(self.phrase_dict.phrases_list)
+
+
+    @staticmethod
+    def get_phrase_template(phrase: Phrase) -> str:
+        with open(f"question_templates/daily_phrase_template.html", "r", encoding="utf-8") as file:
+            phrase_template = file.read()
+        return phrase_template.format(
+            hanzi=phrase.hanzi,
+            pinyin=phrase.pinyin,
+            translation=phrase.translation
+        )
+
+
+    def get_rendered_phrase(self) -> str:
+        random_phrase = self.get_random_phrase()
+        return self.get_phrase_template(random_phrase)
