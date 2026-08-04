@@ -110,7 +110,7 @@ def get_lesson_types() -> dict:
                 "code": "numeral_translation_hanzi"
             },
             {
-                "title": "Ханьцзы - Перевод цифры (банковской)",
+                "title": "Ханьцзы (официальный иероглиф) - Перевод цифры",
                 "code": "numeral_translation_hanzi_bank"
             },
             {
