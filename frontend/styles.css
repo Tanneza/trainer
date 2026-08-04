@@ -6,11 +6,15 @@
   font-size: 7rem;
 }
 
-.w-500px {
+.mw-800px {
+  width: 800px;
+}
+
+.mw-500px {
   width: 500px;
 }
 
-.w-300px {
+.mw-300px {
   width: 300px;
 }
 
