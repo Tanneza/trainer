@@ -18,7 +18,7 @@ export class App extends Component {
   }
 
   async onMount() {
-    viewManager.push({ name: "lesson-type-selection" });
+    viewManager.push({ name: "main" });
 
     await notifications.mount();
   }

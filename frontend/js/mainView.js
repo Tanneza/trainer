@@ -2,7 +2,7 @@ import { Component } from "./component.js";
 import { viewManager } from "./viewManager.js";
 import * as backendApi from "./backendApi.js";
 
-export class LessonTypeSelectionView extends Component {
+export class MainView extends Component {
   constructor(props) {
     super(props);
 
@@ -15,17 +15,24 @@ export class LessonTypeSelectionView extends Component {
   }
 
   async render() {
-    const response = await fetch("html/lesson-type-selection.html");
+    const response = await fetch("html/main.html");
     const html = await response.text();
     return html;
   }
 
   onMount() {
+    this.loadPhraseOfDay();
     this.loadLessonTypes();
   }
 
   onUnmount() {
-    this.listeners.forEach(l => l.element.removeEventListener("click", l.func));
+    this.listeners.forEach((l) => l.element.removeEventListener("click", l.func));
+  }
+
+  async loadPhraseOfDay() {
+    const phraseOfDay = await backendApi.getPhraseOfDay();
+    const container = document.getElementById("phrase-of-day");
+    container.innerHTML = phraseOfDay;
   }
 
   async loadLessonTypes() {
@@ -46,7 +53,7 @@ export class LessonTypeSelectionView extends Component {
       linkElem.classList.add("btn", "btn-primary");
       linkElem.href = "javascript:void(0)";
 
-      const listener = {element: linkElem, func: e => this.onStartLesson(e, type.code)};
+      const listener = { element: linkElem, func: (e) => this.onStartLesson(e, type.code) };
       this.listeners.push(listener);
       linkElem.addEventListener("click", listener.func);
 

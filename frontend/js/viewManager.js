@@ -1,5 +1,5 @@
 import { LessonStatsView } from "./lessonStatsView.js";
-import { LessonTypeSelectionView } from "./lessonTypeSelectionView.js";
+import { MainView } from "./mainView.js";
 import { LessonView } from "./lessonView.js";
 
 class ViewManager {
@@ -45,8 +45,8 @@ export const viewManager = new ViewManager({
   views: [
     {
       path: "/",
-      name: "lesson-type-selection",
-      componentFactory: (props) => new LessonTypeSelectionView(props),
+      name: "main",
+      componentFactory: (props) => new MainView(props),
     },
     {
       path: "/lesson",

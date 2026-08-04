@@ -66,3 +66,15 @@ export async function checkAnswer(lessonId, questionId, userAnswer) {
     console.error("Ошибка!", err);
   }
 }
+
+export async function getPhraseOfDay() {
+  try {
+    const response = await fetch("/api/phrase_of_day", {
+      method: "GET",
+    });
+
+    return await response.json();
+  } catch (err) {
+    console.error("Ошибка!", err);
+  }
+}
