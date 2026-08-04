@@ -14,9 +14,8 @@ class NumeralDictionary:
             file.readline()
 
             for line in file:
-                hanzi_bank, hanzi, pinyin, tone, translations_str = line.split("\t")
-                translations = [t.strip() for t in translations_str.split(",")]
-                numerals_list.append(Numeral(self.next_id, hanzi_bank.strip(), hanzi.strip(), pinyin.strip(), int(tone.strip()), translations))
+                hanzi_bank, hanzi, pinyin, tone, translation = line.split("\t")
+                numerals_list.append(Numeral(self.next_id, hanzi_bank.strip(), hanzi.strip(), pinyin.strip(), int(tone.strip()), translation.strip()))
                 self.next_id += 1
 
         self.numerals_list.extend(numerals_list)

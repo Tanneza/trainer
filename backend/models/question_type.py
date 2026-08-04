@@ -8,3 +8,6 @@ class QuestionType(Enum):
     TRANSLATION_PINYIN = "translation_pinyin"
     RADICAL_TRANSLATION_HANZI = "radical_translation_hanzi"
     RADICAL_NUMBER_HANZI = "radical_number_hanzi"
+    NUMERAL_TRANSLATION_HANZI = "numeral_translation_hanzi"
+    NUMERAL_TRANSLATION_HANZI_BANK = "numeral_translation_hanzi_bank"
+    NUMERAL_TRANSLATION_PINYIN = "numeral_translation_pinyin"
