@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 
-import api
+from api import lessons, questions, phrase_of_day
 
 app = FastAPI()
-app.include_router(api.router)
+app.include_router(lessons.router)
+app.include_router(questions.router)
+app.include_router(phrase_of_day.router)
 
 
 if __name__ == "__main__":

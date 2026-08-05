@@ -1,18 +1,11 @@
 from fastapi import APIRouter, Form
 
-from services.phrase_dictionary_service import phrase_generator
 from lesson_manager import lesson_manager
-from services import trainer_service
 from models.question_type import QuestionType
+from services import trainer_service
 from services.statistics_service import statistics_service
 
 router = APIRouter()
-
-
-@router.get("/phrase_of_day")
-def get_phrase_of_day():
-    html_phrase = phrase_generator.get_rendered_phrase()
-    return html_phrase
 
 
 @router.post("/lessons")
@@ -34,20 +27,3 @@ def get_lesson_types() -> dict:
 @router.get("/lessons/{lesson_id}/statistics")
 def get_lesson_statistics(lesson_id: int) -> dict:
     return statistics_service.lesson_statistics(lesson_id)
-
-
-@router.get("/questions/{question_id}")
-def get_question_by_id(question_id: int) -> dict:
-    question_html = trainer_service.get_question_by_id(question_id)
-    return {
-        "html": question_html
-    }
-
-
-@router.post("/questions/{question_id}/check_answer")
-def check_user_answer(
-        question_id: int,
-        lesson_id: int = Form(...),
-        user_answer: str = Form(...)
-    ) -> dict:
-    return trainer_service.check_user_answer(question_id, lesson_id, user_answer)
