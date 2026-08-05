@@ -13,7 +13,7 @@ class QuestionService:
 
     def get_question_template_by_type(self, question_type: QuestionType) -> str:
         if question_type not in self.question_templates:
-            with open(f"question_templates/{question_type.value}.html", "r", encoding="utf-8") as file:
+            with open(f"templates/{question_type.value}.html", "r", encoding="utf-8") as file:
                 self.question_templates[question_type] = file.read()
         return self.question_templates[question_type]
 
