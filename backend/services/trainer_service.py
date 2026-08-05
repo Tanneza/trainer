@@ -1,6 +1,6 @@
 import random
 
-from event_manager import event_manager
+from services.event_manager import event_manager
 from services.question_generator_factory import get_question_generator
 
 from services.question_service import question_service

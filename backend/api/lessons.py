@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Form
 
-from lesson_manager import lesson_manager
+from services.lesson_manager import lesson_manager
 from models.question_type import QuestionType
 from services import trainer_service
 from services.statistics_service import statistics_service

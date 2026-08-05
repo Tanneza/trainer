@@ -1,4 +1,4 @@
-from event_manager import event_manager
+from services.event_manager import event_manager
 from models.statistics import Statistics
 
 
